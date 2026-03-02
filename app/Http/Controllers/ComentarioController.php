@@ -1,0 +1,69 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Post;
+use App\Models\User;
+use App\Models\Comentario;
+use Illuminate\Http\Request;
+
+class ComentarioController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request, User $user, Post $post)
+    {
+
+        //validar que haya algo escrito
+
+        $request->validate([
+            'comentario' => ['required', 'max:255']
+        ]);
+
+        $this->authorize('create', Comentario::class);
+
+        
+        //guardar el comentario en la BD
+        Comentario::create([
+            'user_id' => auth()->user()->id,
+            'post_id' => $post->id,
+            'comentario' => $request->comentario
+        ]);
+
+        return back()->with('mensaje', 'Comentario Publicado Correctamente');
+
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        //
+    }
+}
